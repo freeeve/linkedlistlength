@@ -3,6 +3,7 @@ package com.skeweredrook.linkedlistlength;
 import org.neo4j.graphdb.*;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
+import org.neo4j.kernel.impl.traversal.TraversalDescriptionImpl;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -29,8 +30,8 @@ public class LinkedListLength
 		Transaction tx = db.beginTx();
 		try {
 			Node startNode = db.getNodeById( nodeId );
-			TraversalDescription traversal = db.traversalDescription();
-			Traverser traverse = traversal
+			TraversalDescription td = new TraversalDescriptionImpl();
+			Traverser traverse = td
 				.depthFirst()
 				.relationships( COMMENTS, Direction.OUTGOING )
 				.sort( new Comparator<org.neo4j.graphdb.Path>()
